@@ -23,12 +23,16 @@ import java.util.List;
 @Tag(name="Item Info")
 public class ItemInfoController {
 
+    private final ItemInfoService itemInfoService;
+
     @Autowired
-    ItemInfoService itemInfoService;
+    public ItemInfoController(ItemInfoService itemInfoService) {
+        this.itemInfoService = itemInfoService;
+    }
 
     @Operation(summary = "This is to fetch All the Data")
     @GetMapping
-    public ResponseEntity<ApiDTO> findAll(){
+    public ResponseEntity<ApiDTO<?>> findAll(){
         List<ItemInfoDTO> itemInfoDTOS = itemInfoService.findAll();
         ApiDTO<List<ItemInfoDTO>> responseDTO = ApiDTO
                 .<List<ItemInfoDTO>>builder()
@@ -41,7 +45,7 @@ public class ItemInfoController {
 
     @Operation(summary = "This is to fetch All the Data Active")
     @GetMapping("/active")
-    public ResponseEntity<ApiDTO> findAllByActive(){
+    public ResponseEntity<ApiDTO<?>> findAllByActive(){
         List<ItemInfoDTO> itemInfoDTOS = itemInfoService.findAllByActive();
         ApiDTO<List<ItemInfoDTO>> responseDTO = ApiDTO
                 .<List<ItemInfoDTO>>builder()
@@ -55,7 +59,7 @@ public class ItemInfoController {
 
     @Operation(summary = "Get One Data")
     @GetMapping("/find")
-    public ResponseEntity<ApiDTO> findOne(@RequestParam Long id){
+    public ResponseEntity<ApiDTO<?>> findOne(@RequestParam Long id){
         ItemInfoDTO itemInfoDTO = itemInfoService.findById(id);
         ApiDTO<ItemInfoDTO> responseDTO = ApiDTO
                 .<ItemInfoDTO>builder()
@@ -68,27 +72,27 @@ public class ItemInfoController {
 
     @Operation(summary = "Save Data")
     @PostMapping
-    public ResponseEntity<ApiDTO> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid ItemInfoDAO itemInfoDAO){
+    public ResponseEntity<ApiDTO<?>> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid ItemInfoDAO itemInfoDAO){
         System.out.println("Step 2 Item info Controller");
         System.out.println(itemInfoDAO.toString());
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = itemInfoService.save(null,itemInfoDAO,user_id);
+        ApiDTO<?> responseDTO = itemInfoService.save(null,itemInfoDAO,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update Data")
     @PutMapping
-    public ResponseEntity<ApiDTO> update(@AuthenticationPrincipal Jwt principal, @RequestParam Long id, @RequestBody @Valid ItemInfoDAO itemInfoDAO){
+    public ResponseEntity<ApiDTO<?>> update(@AuthenticationPrincipal Jwt principal, @RequestParam Long id, @RequestBody @Valid ItemInfoDAO itemInfoDAO){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = itemInfoService.save(id,itemInfoDAO,user_id);
+        ApiDTO<?> responseDTO = itemInfoService.save(id,itemInfoDAO,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete Data")
     @DeleteMapping
-    public ResponseEntity<ApiDTO> delete(@AuthenticationPrincipal Jwt principal, @RequestParam Long id){
+    public ResponseEntity<ApiDTO<?>> delete(@AuthenticationPrincipal Jwt principal, @RequestParam Long id){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = itemInfoService.delete(id,user_id);
+        ApiDTO<?> responseDTO = itemInfoService.delete(id,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }

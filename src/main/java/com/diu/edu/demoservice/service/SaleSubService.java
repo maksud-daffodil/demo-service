@@ -21,16 +21,24 @@ import java.util.stream.Collectors;
 @Service
 public class SaleSubService {
 
+    private final SaleSubRepository saleSubRepository;
+    private final SaleSubMapper saleSubMapper;
 
     @Autowired
-    private SaleSubRepository saleSubRepository;
+    public SaleSubService(
+            SaleSubRepository saleSubRepository,
+            SaleSubMapper saleSubMapper
+    ) {
+        this.saleSubRepository = saleSubRepository;
+        this.saleSubMapper = saleSubMapper;
+    }
 
     public List<SaleSubDTO> findAll(Long sale_main_id) {
-        List<SaleSubDTO> saleSubDTOS = null;
+        List<SaleSubDTO> saleSubDTOS;
         List<SaleSub> saleSubs = saleSubRepository.findAllBySaleMain(SaleMain.builder().id(sale_main_id).build());
         if (!saleSubs.isEmpty()) {
             saleSubDTOS = saleSubs.stream()
-                    .map(SaleSubMapper::convertToDTO)
+                    .map(saleSubMapper::convertToDTO)
                     .collect(Collectors.toList());
         } else {
             throw new ServiceNotFoundException("Data not Found!!");
@@ -41,11 +49,11 @@ public class SaleSubService {
     public SaleSubDTO findById(Long id) {
         SaleSub saleSub = saleSubRepository.findById(id)
                 .orElseThrow(() -> new ServiceNotFoundException("Data not Found!!"));
-        return SaleSubMapper.convertToDTO(saleSub);
+        return saleSubMapper.convertToDTO(saleSub);
     }
 
 
-    public ApiDTO save(Long id, SaleSubDAO saleSubDAO, String user_id) {
+    public ApiDTO<?> save(Long id, SaleSubDAO saleSubDAO, String user_id) {
         Map<String,Object> data = saleSubRepository.spSaleSubSave(id,saleSubDAO.getSaleMainId(),saleSubDAO.getItemInfoId(),saleSubDAO.getPrice(),saleSubDAO.getQuantity(),user_id, "E");
         if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
@@ -53,28 +61,26 @@ public class SaleSubService {
         SaleSub saleSub = saleSubRepository.findById(Long.parseLong(data.get("out_id").toString()))
                 .orElseThrow(() -> new ServiceNotFoundException("Data not Found!!"));
 
-        SaleSubDTO saleSubDTO = SaleSubMapper.convertToDTO(saleSub);
-        ApiDTO<SaleSubDTO> responseDTO = ApiDTO
+        SaleSubDTO saleSubDTO = saleSubMapper.convertToDTO(saleSub);
+        return ApiDTO
                 .<SaleSubDTO>builder()
                 .status(true)
                 .message(data.get("out_message_description").toString())
                 .data(saleSubDTO)
                 .build();
-        return responseDTO;
     }
 
 
-    public ApiDTO delete(Long id,String user_id) {
+    public ApiDTO<?> delete(Long id,String user_id) {
         SaleSubDAO saleSubDAO = new SaleSubDAO();
         Map<String,Object> data = saleSubRepository.spSaleSubSave(id,saleSubDAO.getSaleMainId(),saleSubDAO.getItemInfoId(),saleSubDAO.getPrice(),saleSubDAO.getQuantity(),user_id, "D");
         if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
-        ApiDTO<SaleSubDTO> responseDTO = ApiDTO
+        return ApiDTO
                 .<SaleSubDTO>builder()
                 .status(true)
                 .message(data.get("out_message_description").toString())
                 .build();
-        return responseDTO;
     }
 }

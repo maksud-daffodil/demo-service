@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = DemoValidator.class)
 public @interface DemoValidation {
-    public String message() default "Demo validation";
+    String message() default "Demo validation";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

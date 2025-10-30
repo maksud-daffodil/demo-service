@@ -23,12 +23,16 @@ import java.util.List;
 @Tag(name="Faculty Type")
 public class FacultyTypeController {
 
+    private final FacultyTypeService facultyTypeService;
+
     @Autowired
-    FacultyTypeService facultyTypeService;
+    public FacultyTypeController(FacultyTypeService facultyTypeService) {
+        this.facultyTypeService = facultyTypeService;
+    }
 
     @Operation(summary = "This is to fetch All the Data")
     @GetMapping
-    public ResponseEntity<ApiDTO> findAll(){
+    public ResponseEntity<ApiDTO<?>> findAll(){
         List<FacultyTypeDTO> facultyTypeDTOS = facultyTypeService.findAll();
         ApiDTO<List<FacultyTypeDTO>> responseDTO = ApiDTO
                 .<List<FacultyTypeDTO>>builder()
@@ -41,7 +45,7 @@ public class FacultyTypeController {
 
     @Operation(summary = "This is to fetch All the Data Active")
     @GetMapping("/active")
-    public ResponseEntity<ApiDTO> findAllByActive(){
+    public ResponseEntity<ApiDTO<?>> findAllByActive(){
         List<FacultyTypeDTO> facultyTypeDTOS = facultyTypeService.findAllByActive();
         ApiDTO<List<FacultyTypeDTO>> responseDTO = ApiDTO
                 .<List<FacultyTypeDTO>>builder()
@@ -55,7 +59,7 @@ public class FacultyTypeController {
 
     @Operation(summary = "Get One Data")
     @GetMapping("/find")
-    public ResponseEntity<ApiDTO> findOne(@RequestParam Long id){
+    public ResponseEntity<ApiDTO<?>> findOne(@RequestParam Long id){
         FacultyTypeDTO facultyTypeDTO = facultyTypeService.findById(id);
         ApiDTO<FacultyTypeDTO> responseDTO = ApiDTO
                 .<FacultyTypeDTO>builder()
@@ -68,25 +72,25 @@ public class FacultyTypeController {
 
     @Operation(summary = "Save Data")
     @PostMapping
-    public ResponseEntity<ApiDTO> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid FacultyTypeDAO facultyTypeDAO){
+    public ResponseEntity<ApiDTO<?>> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid FacultyTypeDAO facultyTypeDAO){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = facultyTypeService.save(null,facultyTypeDAO,user_id);
+        ApiDTO<?> responseDTO = facultyTypeService.save(null,facultyTypeDAO,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update Data")
     @PutMapping
-    public ResponseEntity<ApiDTO> update(@AuthenticationPrincipal Jwt principal, @RequestParam Long id, @RequestBody @Valid FacultyTypeDAO facultyTypeDAO){
+    public ResponseEntity<ApiDTO<?>> update(@AuthenticationPrincipal Jwt principal, @RequestParam Long id, @RequestBody @Valid FacultyTypeDAO facultyTypeDAO){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = facultyTypeService.save(id,facultyTypeDAO,user_id);
+        ApiDTO<?> responseDTO = facultyTypeService.save(id,facultyTypeDAO,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete Data")
     @DeleteMapping
-    public ResponseEntity<ApiDTO> delete(@AuthenticationPrincipal Jwt principal, @RequestParam Long id){
+    public ResponseEntity<ApiDTO<?>> delete(@AuthenticationPrincipal Jwt principal, @RequestParam Long id){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = facultyTypeService.delete(id,user_id);
+        ApiDTO<?> responseDTO = facultyTypeService.delete(id,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }

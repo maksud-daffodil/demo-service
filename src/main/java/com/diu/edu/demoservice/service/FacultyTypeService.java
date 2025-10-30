@@ -20,16 +20,24 @@ import java.util.stream.Collectors;
 @Service
 public class FacultyTypeService {
 
+    private final FacultyTypeRepository facultyTypeRepository;
+    private final FacultyTypeMapper facultyTypeMapper;
 
     @Autowired
-    private FacultyTypeRepository facultyTypeRepository;
+    public FacultyTypeService(
+            FacultyTypeRepository facultyTypeRepository,
+            FacultyTypeMapper facultyTypeMapper
+    ) {
+        this.facultyTypeRepository = facultyTypeRepository;
+        this.facultyTypeMapper = facultyTypeMapper;
+    }
 
     public List<FacultyTypeDTO> findAll() {
-        List<FacultyTypeDTO> facultyTypeDTOS = null;
+        List<FacultyTypeDTO> facultyTypeDTOS;
         List<FacultyType> facultyTypes = facultyTypeRepository.findAll();
         if (!facultyTypes.isEmpty()) {
             facultyTypeDTOS = facultyTypes.stream()
-                    .map(FacultyTypeMapper::convertToDTO)
+                    .map(facultyTypeMapper::convertToDTO)
                     .collect(Collectors.toList());
         } else {
             throw new ServiceNotFoundException("Data not Found!!");
@@ -38,11 +46,11 @@ public class FacultyTypeService {
     }
 
     public List<FacultyTypeDTO> findAllByActive() {
-        List<FacultyTypeDTO> facultyTypeDTOS = null;
+        List<FacultyTypeDTO> facultyTypeDTOS;
         List<FacultyType> facultyTypes = facultyTypeRepository.findAllByActive(true);
         if (!facultyTypes.isEmpty()) {
             facultyTypeDTOS = facultyTypes.stream()
-                    .map(FacultyTypeMapper::convertToDTO)
+                    .map(facultyTypeMapper::convertToDTO)
                     .collect(Collectors.toList());
         } else {
             throw new ServiceNotFoundException("Data not Found!!");
@@ -54,16 +62,16 @@ public class FacultyTypeService {
     public FacultyTypeDTO findById(Long id) {
         FacultyType facultyType = facultyTypeRepository.findById(id)
                 .orElseThrow(() -> new ServiceNotFoundException("Data not Found!!"));
-        return FacultyTypeMapper.convertToDTO(facultyType);
+        return facultyTypeMapper.convertToDTO(facultyType);
     }
 
     public FacultyTypeDTO findByIdAndActive(Long id) {
         FacultyType facultyType = facultyTypeRepository.findByIdAndActive(id,true)
                 .orElseThrow(() -> new ServiceNotFoundException("Data not Found!!"));
-        return FacultyTypeMapper.convertToDTO(facultyType);
+        return facultyTypeMapper.convertToDTO(facultyType);
     }
 
-    public ApiDTO save(Long id, FacultyTypeDAO facultyTypeDAO, String user_id) {
+    public ApiDTO<?> save(Long id, FacultyTypeDAO facultyTypeDAO, String user_id) {
         Map<String,Object> data = facultyTypeRepository.spFacultyTypeSave(id,facultyTypeDAO.getCode(),facultyTypeDAO.getName(),facultyTypeDAO.getActive(),user_id, "E");
         if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
@@ -71,28 +79,26 @@ public class FacultyTypeService {
         FacultyType facultyType = facultyTypeRepository.findById(Long.parseLong(data.get("out_id").toString()))
                 .orElseThrow(() -> new ServiceNotFoundException("Data not Found!!"));
 
-        FacultyTypeDTO facultyTypeDTO = FacultyTypeMapper.convertToDTO(facultyType);
-        ApiDTO<FacultyTypeDTO> responseDTO = ApiDTO
+        FacultyTypeDTO facultyTypeDTO = facultyTypeMapper.convertToDTO(facultyType);
+        return ApiDTO
                 .<FacultyTypeDTO>builder()
                 .status(true)
                 .message(data.get("out_message_description").toString())
                 .data(facultyTypeDTO)
                 .build();
-        return responseDTO;
     }
 
 
-    public ApiDTO delete(Long id,String user_id) {
+    public ApiDTO<?> delete(Long id,String user_id) {
         FacultyTypeDAO facultyTypeDAO = new FacultyTypeDAO();
         Map<String,Object> data = facultyTypeRepository.spFacultyTypeSave(id,facultyTypeDAO.getCode(),facultyTypeDAO.getName(),facultyTypeDAO.getActive(),user_id, "D");
         if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
-        ApiDTO<FacultyTypeDTO> responseDTO = ApiDTO
+        return ApiDTO
                 .<FacultyTypeDTO>builder()
                 .status(true)
                 .message(data.get("out_message_description").toString())
                 .build();
-        return responseDTO;
     }
 }

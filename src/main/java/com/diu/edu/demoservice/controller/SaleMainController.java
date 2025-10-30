@@ -23,12 +23,16 @@ import java.util.List;
 @Tag(name="Sale Main")
 public class SaleMainController {
 
-    @Autowired
     SaleMainService saleMainService;
+
+    @Autowired
+    public SaleMainController(SaleMainService saleMainService) {
+        this.saleMainService = saleMainService;
+    }
 
     @Operation(summary = "This is to fetch All the Data")
     @GetMapping
-    public ResponseEntity<ApiDTO> findAll(){
+    public ResponseEntity<ApiDTO<?>> findAll(){
         List<SaleMainDTO> saleMainDTOS = saleMainService.findAll();
         ApiDTO<List<SaleMainDTO>> responseDTO = ApiDTO
                 .<List<SaleMainDTO>>builder()
@@ -43,7 +47,7 @@ public class SaleMainController {
 
     @Operation(summary = "Get One Data")
     @GetMapping("/find")
-    public ResponseEntity<ApiDTO> findOne(@RequestParam Long id){
+    public ResponseEntity<ApiDTO<?>> findOne(@RequestParam Long id){
         SaleMainDTO saleMainDTO = saleMainService.findById(id);
         ApiDTO<SaleMainDTO> responseDTO = ApiDTO
                 .<SaleMainDTO>builder()
@@ -56,25 +60,25 @@ public class SaleMainController {
 
     @Operation(summary = "Save Data")
     @PostMapping
-    public ResponseEntity<ApiDTO> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid SaleMainDAO saleMainDAO){
+    public ResponseEntity<ApiDTO<?>> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid SaleMainDAO saleMainDAO){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = saleMainService.save(null,saleMainDAO,user_id);
+        ApiDTO<?> responseDTO = saleMainService.save(null,saleMainDAO,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update Data")
     @PutMapping
-    public ResponseEntity<ApiDTO> update(@AuthenticationPrincipal Jwt principal, @RequestParam Long id, @RequestBody @Valid SaleMainDAO saleMainDAO){
+    public ResponseEntity<ApiDTO<?>> update(@AuthenticationPrincipal Jwt principal, @RequestParam Long id, @RequestBody @Valid SaleMainDAO saleMainDAO){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = saleMainService.save(id,saleMainDAO,user_id);
+        ApiDTO<?> responseDTO = saleMainService.save(id,saleMainDAO,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete Data")
     @DeleteMapping
-    public ResponseEntity<ApiDTO> delete(@AuthenticationPrincipal Jwt principal, @RequestParam Long id){
+    public ResponseEntity<ApiDTO<?>> delete(@AuthenticationPrincipal Jwt principal, @RequestParam Long id){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO responseDTO = saleMainService.delete(id,user_id);
+        ApiDTO<?> responseDTO = saleMainService.delete(id,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }

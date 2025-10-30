@@ -5,6 +5,7 @@ import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.ErrorDTO;
 import com.diu.edu.demoservice.exception.ServiceBusinessException;
 import com.diu.edu.demoservice.exception.ServiceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
@@ -37,7 +39,7 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public ApiDTO<?> handleServiceExceptionUnique(DataIntegrityViolationException exception) {
-        System.out.println(exception);
+        log.error("e: ", exception);
         ApiDTO<?> serviceResponse = new ApiDTO<>();
         serviceResponse.setStatus(false);
         serviceResponse.setMessage("Value is not unique!!");

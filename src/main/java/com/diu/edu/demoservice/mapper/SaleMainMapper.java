@@ -1,21 +1,13 @@
 package com.diu.edu.demoservice.mapper;
 
-
-
-
-
 import com.diu.edu.demoservice.dto.SaleMainDTO;
 import com.diu.edu.demoservice.entity.SaleMain;
+import org.mapstruct.Mapper;
 
-public class SaleMainMapper {
+@Mapper
+public interface SaleMainMapper {
 
-    public static SaleMainDTO convertToDTO(SaleMain saleMain){
-        SaleMainDTO saleMainDTO = new SaleMainDTO();
-        saleMainDTO.setId(saleMain.getId());
-        saleMainDTO.setSaleDate(saleMain.getSaleDate());
-        saleMainDTO.setPrice(saleMain.getPrice());
-        saleMainDTO.setPerson(saleMain.getPerson());
-        return saleMainDTO;
-    }
+    SaleMainDTO convertToDTO(SaleMain saleMain);
+    SaleMain convertToEntity(SaleMainDTO saleMainDTO);
 
 }

@@ -19,4 +19,3 @@ public class ApiDTO<T> {
     private List<ErrorDTO> errors;
     private T data;
 }
-

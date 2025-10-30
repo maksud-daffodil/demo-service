@@ -1,7 +1,6 @@
 package com.diu.edu.demoservice.dao;
 
 
-import com.diu.edu.demoservice.annotations.DemoValidation;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

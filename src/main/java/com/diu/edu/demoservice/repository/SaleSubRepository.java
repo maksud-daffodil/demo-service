@@ -2,7 +2,6 @@ package com.diu.edu.demoservice.repository;
 
 
 
-import com.diu.edu.demoservice.entity.FacultyType;
 import com.diu.edu.demoservice.entity.SaleMain;
 import com.diu.edu.demoservice.entity.SaleSub;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +9,6 @@ import org.springframework.data.jpa.repository.query.Procedure;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface SaleSubRepository extends JpaRepository<SaleSub,Long> {
 

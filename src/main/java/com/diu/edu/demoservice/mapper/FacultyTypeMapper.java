@@ -6,16 +6,12 @@ package com.diu.edu.demoservice.mapper;
 
 import com.diu.edu.demoservice.dto.FacultyTypeDTO;
 import com.diu.edu.demoservice.entity.FacultyType;
+import org.mapstruct.Mapper;
 
-public class FacultyTypeMapper {
+@Mapper
+public interface FacultyTypeMapper {
 
-    public static FacultyTypeDTO convertToDTO(FacultyType facultyType){
-        FacultyTypeDTO facultyTypeDTO = new FacultyTypeDTO();
-        facultyTypeDTO.setId(facultyType.getId());
-        facultyTypeDTO.setName(facultyType.getName());
-        facultyTypeDTO.setCode(facultyType.getCode());
-        facultyTypeDTO.setActive(facultyType.getActive());
-        return facultyTypeDTO;
-    }
+    FacultyTypeDTO convertToDTO(FacultyType facultyType);
+    FacultyType convertToEntity(FacultyTypeDTO facultyTypeDTO);
 
 }
