@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.service;
 
-
 import com.diu.edu.demoservice.dao.FacultyTypeDAO;
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.FacultyTypeDTO;
@@ -9,7 +8,7 @@ import com.diu.edu.demoservice.exception.ServiceBusinessException;
 import com.diu.edu.demoservice.exception.ServiceNotFoundException;
 import com.diu.edu.demoservice.mapper.FacultyTypeMapper;
 import com.diu.edu.demoservice.repository.FacultyTypeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,19 +17,11 @@ import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
 public class FacultyTypeService {
 
     private final FacultyTypeRepository facultyTypeRepository;
     private final FacultyTypeMapper facultyTypeMapper;
-
-    @Autowired
-    public FacultyTypeService(
-            FacultyTypeRepository facultyTypeRepository,
-            FacultyTypeMapper facultyTypeMapper
-    ) {
-        this.facultyTypeRepository = facultyTypeRepository;
-        this.facultyTypeMapper = facultyTypeMapper;
-    }
 
     public List<FacultyTypeDTO> findAll() {
         List<FacultyTypeDTO> facultyTypeDTOS;
@@ -72,8 +63,10 @@ public class FacultyTypeService {
     }
 
     public ApiDTO<?> save(Long id, FacultyTypeDAO facultyTypeDAO, String user_id) {
-        Map<String,Object> data = facultyTypeRepository.spFacultyTypeSave(id,facultyTypeDAO.getCode(),facultyTypeDAO.getName(),facultyTypeDAO.getActive(),user_id, "E");
-        if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
+        Map<String, Object> data = facultyTypeRepository.spFacultyTypeSave(
+                id, facultyTypeDAO.getCode(), facultyTypeDAO.getName(), facultyTypeDAO.getActive(), user_id, "E"
+        );
+        if (Integer.parseInt(data.get("out_message_code").toString()) > 0) {
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
         FacultyType facultyType = facultyTypeRepository.findById(Long.parseLong(data.get("out_id").toString()))
@@ -91,8 +84,10 @@ public class FacultyTypeService {
 
     public ApiDTO<?> delete(Long id,String user_id) {
         FacultyTypeDAO facultyTypeDAO = new FacultyTypeDAO();
-        Map<String,Object> data = facultyTypeRepository.spFacultyTypeSave(id,facultyTypeDAO.getCode(),facultyTypeDAO.getName(),facultyTypeDAO.getActive(),user_id, "D");
-        if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
+        Map<String, Object> data = facultyTypeRepository.spFacultyTypeSave(
+                id, facultyTypeDAO.getCode(), facultyTypeDAO.getName(), facultyTypeDAO.getActive(), user_id, "D"
+        );
+        if (Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
         return ApiDTO

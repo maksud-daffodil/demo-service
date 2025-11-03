@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface FacultyTypeRepository extends JpaRepository<FacultyType,Long> {
+public interface FacultyTypeRepository extends JpaRepository<FacultyType, Long> {
 
     Optional<FacultyType> findByIdAndActive(Long id, boolean b);
 
     List<FacultyType> findAllByActive(boolean b);
 
     @Procedure(name = "faculty_type_save")
-    Map<String,Object> spFacultyTypeSave(Long id, String code, String name, Boolean active, String user, String operation);
-
+    Map<String, Object> spFacultyTypeSave(Long id, String code, String name, Boolean active, String user, String operation);
 
 }

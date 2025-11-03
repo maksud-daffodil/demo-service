@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.service;
 
-
 import com.diu.edu.demoservice.dao.SaleMainDAO;
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.SaleMainDTO;
@@ -9,28 +8,19 @@ import com.diu.edu.demoservice.exception.ServiceBusinessException;
 import com.diu.edu.demoservice.exception.ServiceNotFoundException;
 import com.diu.edu.demoservice.mapper.SaleMainMapper;
 import com.diu.edu.demoservice.repository.SaleMainRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 @Service
+@RequiredArgsConstructor
 public class SaleMainService {
 
     private final SaleMainRepository saleMainRepository;
     private final SaleMainMapper saleMainMapper;
-
-    @Autowired
-    public SaleMainService(
-            SaleMainRepository saleMainRepository,
-            SaleMainMapper saleMainMapper
-    ) {
-        this.saleMainRepository = saleMainRepository;
-        this.saleMainMapper = saleMainMapper;
-    }
 
     public List<SaleMainDTO> findAll() {
         List<SaleMainDTO> saleMainDTOS;
@@ -55,8 +45,10 @@ public class SaleMainService {
 
 
     public ApiDTO<?> save(Long id, SaleMainDAO saleMainDAO, String user_id) {
-        Map<String,Object> data = saleMainRepository.spSaleMainSave(id,saleMainDAO.getSaleDate(),saleMainDAO.getPerson(),user_id, "E");
-        if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
+        Map<String, Object> data = saleMainRepository.spSaleMainSave(
+                id, saleMainDAO.getSaleDate(), saleMainDAO.getPerson(), user_id, "E"
+        );
+        if (Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
         SaleMain saleMain = saleMainRepository.findById(Long.parseLong(data.get("out_id").toString()))
@@ -74,8 +66,10 @@ public class SaleMainService {
 
     public ApiDTO<?> delete(Long id,String user_id) {
         SaleMainDAO saleMainDAO = new SaleMainDAO();
-        Map<String,Object> data = saleMainRepository.spSaleMainSave(id,saleMainDAO.getSaleDate(),saleMainDAO.getPerson(),user_id, "D");
-        if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
+        Map<String, Object> data = saleMainRepository.spSaleMainSave(
+                id, saleMainDAO.getSaleDate(), saleMainDAO.getPerson(), user_id, "D"
+        );
+        if (Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
         return ApiDTO

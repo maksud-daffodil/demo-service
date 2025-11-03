@@ -1,9 +1,5 @@
 package com.diu.edu.demoservice.mapper;
 
-
-
-
-
 import com.diu.edu.demoservice.dto.FacultyTypeDTO;
 import com.diu.edu.demoservice.entity.FacultyType;
 import org.mapstruct.Mapper;

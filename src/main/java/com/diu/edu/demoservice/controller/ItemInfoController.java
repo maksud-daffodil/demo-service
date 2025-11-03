@@ -8,6 +8,7 @@ import com.diu.edu.demoservice.service.ItemInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/demo/iteminfo")
 @Tag(name="Item Info")
+@Slf4j
 public class ItemInfoController {
 
     private final ItemInfoService itemInfoService;
@@ -73,8 +75,8 @@ public class ItemInfoController {
     @Operation(summary = "Save Data")
     @PostMapping
     public ResponseEntity<ApiDTO<?>> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid ItemInfoDAO itemInfoDAO){
-        System.out.println("Step 2 Item info Controller");
-        System.out.println(itemInfoDAO.toString());
+        log.info("Step 2 Item info Controller");
+        log.info(itemInfoDAO.toString());
         String user_id = principal.getClaimAsString("preferred_username");
         ApiDTO<?> responseDTO = itemInfoService.save(null,itemInfoDAO,user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);

@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.service;
 
-
 import com.diu.edu.demoservice.dao.SaleSubDAO;
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.SaleSubDTO;
@@ -10,28 +9,19 @@ import com.diu.edu.demoservice.exception.ServiceBusinessException;
 import com.diu.edu.demoservice.exception.ServiceNotFoundException;
 import com.diu.edu.demoservice.mapper.SaleSubMapper;
 import com.diu.edu.demoservice.repository.SaleSubRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 @Service
+@RequiredArgsConstructor
 public class SaleSubService {
 
     private final SaleSubRepository saleSubRepository;
     private final SaleSubMapper saleSubMapper;
-
-    @Autowired
-    public SaleSubService(
-            SaleSubRepository saleSubRepository,
-            SaleSubMapper saleSubMapper
-    ) {
-        this.saleSubRepository = saleSubRepository;
-        this.saleSubMapper = saleSubMapper;
-    }
 
     public List<SaleSubDTO> findAll(Long sale_main_id) {
         List<SaleSubDTO> saleSubDTOS;
@@ -54,8 +44,10 @@ public class SaleSubService {
 
 
     public ApiDTO<?> save(Long id, SaleSubDAO saleSubDAO, String user_id) {
-        Map<String,Object> data = saleSubRepository.spSaleSubSave(id,saleSubDAO.getSaleMainId(),saleSubDAO.getItemInfoId(),saleSubDAO.getPrice(),saleSubDAO.getQuantity(),user_id, "E");
-        if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
+        Map<String, Object> data = saleSubRepository.spSaleSubSave(
+                id, saleSubDAO.getSaleMainId(), saleSubDAO.getItemInfoId(), saleSubDAO.getPrice(), saleSubDAO.getQuantity(), user_id, "E"
+        );
+        if (Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
         SaleSub saleSub = saleSubRepository.findById(Long.parseLong(data.get("out_id").toString()))
@@ -71,10 +63,12 @@ public class SaleSubService {
     }
 
 
-    public ApiDTO<?> delete(Long id,String user_id) {
+    public ApiDTO<?> delete(Long id, String user_id) {
         SaleSubDAO saleSubDAO = new SaleSubDAO();
-        Map<String,Object> data = saleSubRepository.spSaleSubSave(id,saleSubDAO.getSaleMainId(),saleSubDAO.getItemInfoId(),saleSubDAO.getPrice(),saleSubDAO.getQuantity(),user_id, "D");
-        if(Integer.parseInt(data.get("out_message_code").toString()) > 0){
+        Map<String, Object> data = saleSubRepository.spSaleSubSave(
+                id, saleSubDAO.getSaleMainId(), saleSubDAO.getItemInfoId(), saleSubDAO.getPrice(), saleSubDAO.getQuantity(), user_id, "D"
+        );
+        if (Integer.parseInt(data.get("out_message_code").toString()) > 0){
             throw new ServiceBusinessException(data.get("out_message_description").toString());
         }
         return ApiDTO

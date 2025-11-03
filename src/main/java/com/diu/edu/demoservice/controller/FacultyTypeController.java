@@ -74,7 +74,7 @@ public class FacultyTypeController {
     @PostMapping
     public ResponseEntity<ApiDTO<?>> save(@AuthenticationPrincipal Jwt principal, @RequestBody @Valid FacultyTypeDAO facultyTypeDAO){
         String user_id = principal.getClaimAsString("preferred_username");
-        ApiDTO<?> responseDTO = facultyTypeService.save(null,facultyTypeDAO,user_id);
+        ApiDTO<?> responseDTO = facultyTypeService.save(null, facultyTypeDAO, user_id);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 

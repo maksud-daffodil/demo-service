@@ -1,9 +1,5 @@
 package com.diu.edu.demoservice.mapper;
 
-
-
-
-
 import com.diu.edu.demoservice.dto.ItemInfoDTO;
 import com.diu.edu.demoservice.entity.ItemInfo;
 import org.mapstruct.Mapper;
