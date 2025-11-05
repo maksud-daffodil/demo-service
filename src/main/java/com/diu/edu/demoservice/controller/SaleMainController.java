@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.controller;
 
-
 import com.diu.edu.demoservice.dao.SaleMainDAO;
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.SaleMainDTO;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/demo/salemain")
@@ -42,8 +40,6 @@ public class SaleMainController {
                 .build();
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
-
-
 
     @Operation(summary = "Get One Data")
     @GetMapping("/find")

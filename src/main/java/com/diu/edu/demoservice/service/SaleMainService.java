@@ -35,14 +35,11 @@ public class SaleMainService {
         return saleMainDTOS;
     }
 
-
-
     public SaleMainDTO findById(Long id) {
         SaleMain saleMain = saleMainRepository.findById(id)
                 .orElseThrow(() -> new ServiceNotFoundException("Data not Found!!"));
         return saleMainMapper.convertToDTO(saleMain);
     }
-
 
     public ApiDTO<?> save(Long id, SaleMainDAO saleMainDAO, String user_id) {
         Map<String, Object> data = saleMainRepository.spSaleMainSave(
@@ -62,7 +59,6 @@ public class SaleMainService {
                 .data(saleMainDTO)
                 .build();
     }
-
 
     public ApiDTO<?> delete(Long id,String user_id) {
         SaleMainDAO saleMainDAO = new SaleMainDAO();

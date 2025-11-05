@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

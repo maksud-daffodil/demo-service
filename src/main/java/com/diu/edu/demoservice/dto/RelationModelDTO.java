@@ -15,5 +15,4 @@ public class RelationModelDTO {
     private Long id;
     private String name;
     private String code;
-
 }

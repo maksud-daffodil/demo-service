@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.controller;
 
-
 import com.diu.edu.demoservice.dao.ItemInfoDAO;
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.ItemInfoDTO;
@@ -8,8 +7,8 @@ import com.diu.edu.demoservice.service.ItemInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,19 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/demo/iteminfo")
 @Tag(name="Item Info")
+@RequiredArgsConstructor
 @Slf4j
 public class ItemInfoController {
 
     private final ItemInfoService itemInfoService;
-
-    @Autowired
-    public ItemInfoController(ItemInfoService itemInfoService) {
-        this.itemInfoService = itemInfoService;
-    }
 
     @Operation(summary = "This is to fetch All the Data")
     @GetMapping
@@ -57,7 +51,6 @@ public class ItemInfoController {
                 .build();
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
-
 
     @Operation(summary = "Get One Data")
     @GetMapping("/find")

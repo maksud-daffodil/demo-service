@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.handler;
 
-
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.ErrorDTO;
 import com.diu.edu.demoservice.exception.ServiceBusinessException;

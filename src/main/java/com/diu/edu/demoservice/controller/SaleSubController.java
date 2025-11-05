@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.controller;
 
-
 import com.diu.edu.demoservice.dao.SaleSubDAO;
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.SaleSubDTO;
@@ -8,7 +7,7 @@ import com.diu.edu.demoservice.service.SaleSubService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,18 +16,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/demo/salesub")
 @Tag(name="Sale Sub")
+@RequiredArgsConstructor
 public class SaleSubController {
 
     SaleSubService saleSubService;
-
-    @Autowired
-    public SaleSubController(SaleSubService saleSubService) {
-        this.saleSubService = saleSubService;
-    }
 
     @Operation(summary = "This is to fetch All the Data By Sale Main")
     @GetMapping
@@ -42,8 +36,6 @@ public class SaleSubController {
                 .build();
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
-
-
 
     @Operation(summary = "Get One Data")
     @GetMapping("/find")

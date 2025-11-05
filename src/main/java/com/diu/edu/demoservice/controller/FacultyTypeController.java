@@ -1,6 +1,5 @@
 package com.diu.edu.demoservice.controller;
 
-
 import com.diu.edu.demoservice.dao.FacultyTypeDAO;
 import com.diu.edu.demoservice.dto.ApiDTO;
 import com.diu.edu.demoservice.dto.FacultyTypeDTO;
@@ -8,7 +7,7 @@ import com.diu.edu.demoservice.service.FacultyTypeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,18 +16,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/faculty/type")
 @Tag(name="Faculty Type")
+@RequiredArgsConstructor
 public class FacultyTypeController {
 
     private final FacultyTypeService facultyTypeService;
-
-    @Autowired
-    public FacultyTypeController(FacultyTypeService facultyTypeService) {
-        this.facultyTypeService = facultyTypeService;
-    }
 
     @Operation(summary = "This is to fetch All the Data")
     @GetMapping

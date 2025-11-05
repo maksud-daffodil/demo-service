@@ -1,7 +1,5 @@
 package com.diu.edu.demoservice.repository;
 
-
-
 import com.diu.edu.demoservice.entity.ItemInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
