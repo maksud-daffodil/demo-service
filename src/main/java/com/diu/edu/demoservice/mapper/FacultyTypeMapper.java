@@ -4,7 +4,7 @@ import com.diu.edu.demoservice.dto.FacultyTypeDTO;
 import com.diu.edu.demoservice.entity.FacultyType;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface FacultyTypeMapper {
 
     FacultyTypeDTO convertToDTO(FacultyType facultyType);

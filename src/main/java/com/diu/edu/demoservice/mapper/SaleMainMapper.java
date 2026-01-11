@@ -4,7 +4,7 @@ import com.diu.edu.demoservice.dto.SaleMainDTO;
 import com.diu.edu.demoservice.entity.SaleMain;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SaleMainMapper {
 
     SaleMainDTO convertToDTO(SaleMain saleMain);
