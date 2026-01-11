@@ -30,8 +30,12 @@ sudo docker run --name demo-service  -d -p 6004:6004 daffodilsoftwaresection/dem
 
 ### To delete all containers including its volumes use,
 
+```shell
 docker rm -vf $(docker ps -aq)
+```
 
 ### To delete all the images,
 
+```shell
 sudo docker rmi -f $(sudo docker images -aq)
+```
