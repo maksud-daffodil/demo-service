@@ -4,10 +4,12 @@ server:
 spring:
   application:
     name: demo-service
+  config:
+    import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=demo;sendTimeAsDateTime=false;encrypt=false;trustServerCertificate=false;
-    username: sa
-    password: Diu$1234
+    url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};endTimeAsDateTime=false;encrypt=false;trustServerCertificate=false;
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     hibernate:
       dialect: org.hibernate.dialect.SQLServer2019Dialect
@@ -34,7 +36,7 @@ eureka:
     instance-id: ${spring.application.name}:${random.uuid}
     prefer-ip-address: true
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: false
+    fetch-registry: false
     service-url:
       defaultZone: http://demo:password@localhost:9761/eureka
